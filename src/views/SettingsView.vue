@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-import { useSettingsStore } from "../stores/settings";
-import TopAppBar from "../components/layout/TopAppBar.vue";
-import TimePickerDialog from "../components/TimePickerDialog.vue";
+import { useSettingsStore } from "@/stores/settings";
+import TopAppBar from "@/components/layout/TopAppBar.vue";
+import TimePickerDialog from "@/components/TimePickerDialog.vue";
 
 const settingsStore = useSettingsStore();
 
@@ -20,7 +20,7 @@ const openWakeTimeDialog = () => {
   showWakeTimeDialog.value = true;
 };
 
-const handleBedtimeConfirm = (time) => {
+const handleBedtimeConfirm = (time: string) => {
   targetBedtime.value = time;
   settingsStore.updateSettings({
     targetBedtime: time,
@@ -28,7 +28,7 @@ const handleBedtimeConfirm = (time) => {
   });
 };
 
-const handleWakeTimeConfirm = (time) => {
+const handleWakeTimeConfirm = (time: string) => {
   targetWakeTime.value = time;
   settingsStore.updateSettings({
     targetBedtime: targetBedtime.value,

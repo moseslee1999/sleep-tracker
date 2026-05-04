@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useSleepStore } from "../stores/sleep";
-import { useSettingsStore } from "../stores/settings";
-import TopAppBar from "../components/layout/TopAppBar.vue";
-import BottomNavBar from "../components/layout/BottomNavBar.vue";
+import { useSleepStore } from "@/stores/sleep";
+import { useSettingsStore } from "@/stores/settings";
+import TopAppBar from "@/components/layout/TopAppBar.vue";
+import BottomNavBar from "@/components/layout/BottomNavBar.vue";
 
 const router = useRouter();
 const sleepStore = useSleepStore();
@@ -19,13 +19,13 @@ const activeTab = ref("day");
 // Day view data
 const lastSession = computed(() => sleepStore.lastSession);
 
-const formatDuration = (minutes) => {
+const formatDuration = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   return `${hours}小時${mins}分`;
 };
 
-const formatTime = (isoString) => {
+const formatTime = (isoString: string): string => {
   if (!isoString) return "--:--";
   const date = new Date(isoString);
   return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
@@ -60,17 +60,19 @@ const isCloseToTargetWakeTime = computed(() => {
 // Sessions list
 const recentSessions = computed(() => {
   return [...sleepStore.sessions]
-    .sort((a, b) => new Date(b.endTime) - new Date(a.endTime))
+    .sort(
+      (a, b) => new Date(b.endTime).getTime() - new Date(a.endTime).getTime(),
+    )
     .slice(0, 10);
 });
 
-const deleteSession = (id) => {
+const deleteSession = (id: string) => {
   if (confirm("確定要刪除這筆睡眠記錄嗎？")) {
     sleepStore.deleteSession(id);
   }
 };
 
-const formatDate = (isoString) => {
+const formatDate = (isoString: string): string => {
   const date = new Date(isoString);
   return `${date.getMonth() + 1}/${date.getDate()}`;
 };

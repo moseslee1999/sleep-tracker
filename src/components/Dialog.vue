@@ -1,29 +1,29 @@
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { computed } from "vue";
 
 const props = defineProps({
   open: {
     type: Boolean,
     default: false,
   },
-})
+});
 
-const emit = defineEmits(['update:open'])
+const emit = defineEmits(["update:open"]);
 
 const isOpen = computed({
   get: () => props.open,
-  set: (value) => emit('update:open', value),
-})
+  set: (value) => emit("update:open", value),
+});
 
 const close = () => {
-  isOpen.value = false
-}
+  isOpen.value = false;
+};
 
-const handleBackdropClick = (event) => {
+const handleBackdropClick = (event: MouseEvent) => {
   if (event.target === event.currentTarget) {
-    close()
+    close();
   }
-}
+};
 </script>
 
 <template>

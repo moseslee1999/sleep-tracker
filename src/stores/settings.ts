@@ -1,19 +1,20 @@
-import { defineStore } from "pinia";
-import { storage } from "../utils/storage";
+import { defineStore } from 'pinia';
+import { storage } from '@/utils/storage';
+import type { Settings } from '@/types';
 
-export const useSettingsStore = defineStore("settings", {
-  state: () => ({
-    targetBedtime: "22:30",
-    targetWakeTime: "06:45",
+export const useSettingsStore = defineStore('settings', {
+  state: (): Settings => ({
+    targetBedtime: '22:30',
+    targetWakeTime: '06:45',
   }),
 
   actions: {
-    updateSettings(patch) {
+    updateSettings(patch: Partial<Settings>): void {
       Object.assign(this, patch);
       this.saveToStorage();
     },
 
-    loadFromStorage() {
+    loadFromStorage(): void {
       const saved = storage.getSettings();
       if (saved) {
         this.targetBedtime = saved.targetBedtime ?? this.targetBedtime;
@@ -21,7 +22,7 @@ export const useSettingsStore = defineStore("settings", {
       }
     },
 
-    saveToStorage() {
+    saveToStorage(): void {
       storage.saveSettings({
         targetBedtime: this.targetBedtime,
         targetWakeTime: this.targetWakeTime,

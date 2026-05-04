@@ -1,6 +1,6 @@
-<script setup>
-import { ref, watch } from 'vue'
-import Dialog from './Dialog.vue'
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import Dialog from "./Dialog.vue";
 
 const props = defineProps({
   open: {
@@ -13,82 +13,87 @@ const props = defineProps({
   },
   initialValue: {
     type: String,
-    default: '00:00',
+    default: "00:00",
   },
-})
+});
 
-const emit = defineEmits(['update:open', 'confirm'])
+const emit = defineEmits(["update:open", "confirm"]);
 
-const isOpen = ref(props.open)
-const hours = ref('00')
-const minutes = ref('00')
+const isOpen = ref(props.open);
+const hours = ref("00");
+const minutes = ref("00");
 
-watch(() => props.open, (newVal) => {
-  isOpen.value = newVal
-  if (newVal) {
-    // Parse initial value
-    const [h, m] = props.initialValue.split(':')
-    hours.value = h.padStart(2, '0')
-    minutes.value = m.padStart(2, '0')
-  }
-})
+watch(
+  () => props.open,
+  (newVal) => {
+    isOpen.value = newVal;
+    if (newVal) {
+      // Parse initial value
+      const [h, m] = props.initialValue.split(":");
+      hours.value = h.padStart(2, "0");
+      minutes.value = m.padStart(2, "0");
+    }
+  },
+);
 
 watch(isOpen, (newVal) => {
-  emit('update:open', newVal)
-})
+  emit("update:open", newVal);
+});
 
-const handleHoursInput = (event) => {
-  let value = parseInt(event.target.value) || 0
-  if (value < 0) value = 0
-  if (value > 23) value = 23
-  hours.value = String(value).padStart(2, '0')
-}
+const handleHoursInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  let value = parseInt(target.value) || 0;
+  if (value < 0) value = 0;
+  if (value > 23) value = 23;
+  hours.value = String(value).padStart(2, "0");
+};
 
-const handleMinutesInput = (event) => {
-  let value = parseInt(event.target.value) || 0
-  if (value < 0) value = 0
-  if (value > 59) value = 59
-  minutes.value = String(value).padStart(2, '0')
-}
+const handleMinutesInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  let value = parseInt(target.value) || 0;
+  if (value < 0) value = 0;
+  if (value > 59) value = 59;
+  minutes.value = String(value).padStart(2, "0");
+};
 
 const incrementHours = () => {
-  let h = parseInt(hours.value)
-  h = (h + 1) % 24
-  hours.value = String(h).padStart(2, '0')
-}
+  let h = parseInt(hours.value);
+  h = (h + 1) % 24;
+  hours.value = String(h).padStart(2, "0");
+};
 
 const decrementHours = () => {
-  let h = parseInt(hours.value)
-  h = (h - 1 + 24) % 24
-  hours.value = String(h).padStart(2, '0')
-}
+  let h = parseInt(hours.value);
+  h = (h - 1 + 24) % 24;
+  hours.value = String(h).padStart(2, "0");
+};
 
 const incrementMinutes = () => {
-  let m = parseInt(minutes.value)
-  m = (m + 1) % 60
-  minutes.value = String(m).padStart(2, '0')
-}
+  let m = parseInt(minutes.value);
+  m = (m + 1) % 60;
+  minutes.value = String(m).padStart(2, "0");
+};
 
 const decrementMinutes = () => {
-  let m = parseInt(minutes.value)
-  m = (m - 1 + 60) % 60
-  minutes.value = String(m).padStart(2, '0')
-}
+  let m = parseInt(minutes.value);
+  m = (m - 1 + 60) % 60;
+  minutes.value = String(m).padStart(2, "0");
+};
 
 const handleConfirm = () => {
-  const timeString = `${hours.value}:${minutes.value}`
-  emit('confirm', timeString)
-  isOpen.value = false
-}
+  const timeString = `${hours.value}:${minutes.value}`;
+  emit("confirm", timeString);
+  isOpen.value = false;
+};
 
 const handleCancel = () => {
-  isOpen.value = false
-}
+  isOpen.value = false;
+};
 </script>
 
 <template>
   <Dialog v-model:open="isOpen">
-    <template #default="{ close }">
+    <template #default>
       <!-- Header -->
       <div class="px-6 pt-6 pb-4 border-b border-outline-variant">
         <h2 class="text-headline-md text-on-surface font-chinese">
@@ -106,7 +111,9 @@ const handleCancel = () => {
               class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors"
               aria-label="增加小時"
             >
-              <span class="material-symbols-outlined text-on-surface">expand_less</span>
+              <span class="material-symbols-outlined text-on-surface"
+                >expand_less</span
+              >
             </button>
             <input
               type="number"
@@ -122,7 +129,9 @@ const handleCancel = () => {
               class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors"
               aria-label="減少小時"
             >
-              <span class="material-symbols-outlined text-on-surface">expand_more</span>
+              <span class="material-symbols-outlined text-on-surface"
+                >expand_more</span
+              >
             </button>
           </div>
 
@@ -136,7 +145,9 @@ const handleCancel = () => {
               class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors"
               aria-label="增加分鐘"
             >
-              <span class="material-symbols-outlined text-on-surface">expand_less</span>
+              <span class="material-symbols-outlined text-on-surface"
+                >expand_less</span
+              >
             </button>
             <input
               type="number"
@@ -152,14 +163,18 @@ const handleCancel = () => {
               class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors"
               aria-label="減少分鐘"
             >
-              <span class="material-symbols-outlined text-on-surface">expand_more</span>
+              <span class="material-symbols-outlined text-on-surface"
+                >expand_more</span
+              >
             </button>
           </div>
         </div>
       </div>
 
       <!-- Actions -->
-      <div class="px-6 pb-6 flex gap-3 justify-end border-t border-outline-variant pt-4">
+      <div
+        class="px-6 pb-6 flex gap-3 justify-end border-t border-outline-variant pt-4"
+      >
         <button
           @click="handleCancel"
           class="px-6 py-3 rounded-lg text-label-lg font-chinese text-on-surface hover:bg-surface-container transition-colors min-h-touch-target-min"

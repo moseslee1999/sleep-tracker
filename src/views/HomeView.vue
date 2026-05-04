@@ -1,18 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import { useSleepStore } from "../stores/sleep";
-import { useSettingsStore } from "../stores/settings";
-import TopAppBar from "../components/layout/TopAppBar.vue";
-import BottomNavBar from "../components/layout/BottomNavBar.vue";
+import { useSleepStore } from "@/stores/sleep";
+import TopAppBar from "@/components/layout/TopAppBar.vue";
+import BottomNavBar from "@/components/layout/BottomNavBar.vue";
 
 const router = useRouter();
 const sleepStore = useSleepStore();
-const settingsStore = useSettingsStore();
 
 // For live elapsed time display
 const now = ref(Date.now());
-let intervalId = null;
+let intervalId: ReturnType<typeof setInterval> | null = null;
 
 const isTracking = computed(() => sleepStore.activeSession.isTracking);
 
