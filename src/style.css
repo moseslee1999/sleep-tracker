@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* Base styles */
+body {
+  @apply bg-background text-on-background font-sans min-h-screen;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
